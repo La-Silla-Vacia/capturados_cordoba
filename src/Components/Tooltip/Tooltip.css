@@ -1,0 +1,4 @@
+.container {
+  position: absolute;
+  border: 1px solid map(colors, primary, xdark);
+}
