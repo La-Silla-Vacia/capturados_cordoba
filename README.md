@@ -32,7 +32,8 @@ To embed on a webpage use this code:
 <!-- START OF OUR INTERACTIVE -->
 <script type="text/javascript">
 window.capturados_cordoba_data = {
-  "name": capturados_cordoba
+  "name": capturados_cordoba,
+  "dataUri": "https://lsv-data-visualizations.firebaseio.com/capturados-cordoba.json"
 }
 </script>
 <div class="lsv-interactive" id="capturados_cordoba">
