@@ -6,11 +6,7 @@ import s from './Graphic.css';
 export default class Graphic extends Component {
 
   shouldComponentUpdate(nextprops) {
-    if (nextprops.data !== this.props.data) {
-      return true
-    } else {
-      return false;
-    }
+    return nextprops.data !== this.props.data || nextprops.width !== this.props.width;
   }
 
   getSenders(group, alignment) {
@@ -35,12 +31,12 @@ export default class Graphic extends Component {
 
       return (
         <circle
-          key={index}
+          key={id}
           title={name}
           cx={x} cy={y}
           fill={`url(#photo-${id})`}
           r={circleSize - 1}
-          className={cx(s.person, s[`person--${alignment}`], {[s['person--has-content']]: hasContent})}
+          className={cx(s.person, s[`person--${alignment}`], { [s['person--has-content']]: hasContent })}
           onMouseMove={this.props.tooltipCallback.bind(this, name)}
           onMouseLeave={this.props.hideTooltipCallback}
           onClick={this.props.toggleContentCallback.bind(this, sender)}
@@ -84,7 +80,7 @@ export default class Graphic extends Component {
             y1={y1}
             x2={x2}
             y2={y2}
-            className={cx(s.connection, {[s.connection__center]: center})}
+            className={cx(s.connection, { [s.connection__center]: center })}
             onClick={this.props.toggleContentCallback.bind(this, sender)}
           />
         );

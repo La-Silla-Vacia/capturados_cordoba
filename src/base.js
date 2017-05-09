@@ -28,6 +28,7 @@ export default class Base extends Component {
       content: false
     };
 
+    this.updateDimensions = this.updateDimensions.bind(this);
     this.showTooltip = this.showTooltip.bind(this);
     this.hideTooltip = this.hideTooltip.bind(this);
     this.toggleContent = this.toggleContent.bind(this);
@@ -36,14 +37,22 @@ export default class Base extends Component {
   componentWillMount() {
     this.setData();
 
-    if (this.props.width) {
-      this.setState({ width: this.props.width() })
-    }
+    this.updateDimensions();
   }
 
   componentWillReceiveProps(newprops) {
     if (newprops.width) {
       this.setState({ width: newprops.width() })
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions);
+  }
+
+  updateDimensions() {
+    if (this.props.width) {
+      this.setState({ width: this.props.width() })
     }
   }
 
