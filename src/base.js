@@ -2,7 +2,8 @@ import { h, render, Component } from 'preact';
 import cx from 'classnames';
 
 import s from './base.css';
-import Tooltip from "./Components/Tooltip/Tooltip";
+import Tooltip from "./Components/Tooltip";
+import Graphic from "./Components/Graphic";
 const data = require('../data/data.json');
 
 export default class Base extends Component {
@@ -23,7 +24,10 @@ export default class Base extends Component {
         x: false,
         y: false
       }
-    }
+    };
+
+    this.showTooltip = this.showTooltip.bind(this);
+    this.hideTooltip = this.hideTooltip.bind(this);
   }
 
   componentWillMount() {
@@ -134,38 +138,8 @@ export default class Base extends Component {
     })
   }
 
-  getSenders(group, alignment) {
-    const { personSize, width } = this.state;
-    const circleSize = personSize / 2;
-    let y = -(personSize);
-    let x = circleSize;
-
-    if (alignment === 'right') {
-      x = width - circleSize;
-    } else if (alignment === 'center') {
-      x = width / 2;
-    }
-
-    return group.map((sender, index) => {
-      const { name, id } = sender;
-      y += personSize * 1.5;
-      return (
-        <circle
-          key={index}
-          title={name}
-          cx={x} cy={y}
-          fill={`url(#photo-${id})`}
-          r={circleSize - 1}
-          className={cx(s.person, s[`person--${alignment}`])}
-          onMouseEnter={this.showTooltip.bind(this, x, y)}
-          onMouseLeave={this.hideTooltip.bind(this)}
-        />
-      )
-    });
-  }
-
-  showTooltip(x, y) {
-    const tooltip = { show: true, x, y };
+  showTooltip(name, x) {
+    const tooltip = { show: true, content: name, x: x.layerX, y: x.layerY };
     this.setState({ tooltip });
   }
 
@@ -174,101 +148,29 @@ export default class Base extends Component {
     this.setState({ tooltip });
   }
 
-  getConnections() {
-    const { sendsAConnection, receivesAConnection, sendsAndReceivesAConnection, personSize, width } = this.state;
-    return sendsAConnection.map((sender, index) => {
-      let x1 = personSize / 2;
-      let y1 = (personSize / 2) + ((personSize * 1.5) * index);
-
-      let x2 = width - personSize / 2;
-      let y2;
-
-      return sender.connections.map((con) => {
-        let notInReceivers = true;
-        receivesAConnection.map((recItem, index) => {
-          if (recItem.id === con) {
-            notInReceivers = false;
-            y2 = (personSize / 2) + ((personSize * 1.5) * index);
-          }
-        });
-
-        if (notInReceivers) {
-          sendsAndReceivesAConnection.map((recItem, index) => {
-            if (recItem.id === con) {
-              x2 = width / 2;
-              y2 = (personSize / 2) + ((personSize * 1.5) * index);
-            }
-          });
-        }
-
-        return (
-          <line x1={x1} y1={y1} x2={x2} y2={y2} className={s.connection} />
-        );
-      });
-
-    });
-  }
-
-  getSenderAndReceiverConnections(group) {
-    const { width, receivesAConnection, personSize } = this.state;
-    return group.map((sender, index) => {
-      let x1 = width / 2 + personSize / 2;
-      let y1 = (personSize / 2) + ((personSize * 1.5) * index);
-
-      let x2 = width - personSize / 2;
-
-      return sender.connections.map((con) => {
-        return receivesAConnection.map((recItem, index) => {
-          if (recItem.id === con) {
-            let y2 = (personSize / 2) + ((personSize * 1.5) * index);
-            return (
-              <line x1={x1} y1={y1} x2={x2} y2={y2} className={s.connection} />
-            );
-          }
-        });
-      });
-    })
-  }
-
-  getProfilePictures() {
-    const { data, personSize } = this.state;
-    return data.map((item) => {
-      const { photoLink, id } = item;
-      return (
-        <pattern id={`photo-${id}`} height="100%" width="100%" patternContentUnits="objectBoundingBox" viewBox="0 0 1 1"
-                 preserveAspectRatio="xMidYMid slice">
-          <image height="1" width="1" preserveAspectRatio="xMidYMid slice" xmlnsXlink="http://www.w3.org/1999/xlink"
-                 xlinkHref={photoLink} />
-        </pattern>
-      );
-    });
-  }
-
   render(props, state) {
-    const { width, height, sendsAConnection, sendsAndReceivesAConnection, receivesAConnection, tooltip } = state;
-    const profilePictures = this.getProfilePictures();
-    const senders = this.getSenders(sendsAConnection, 'left');
-    const sendAndReceivers = this.getSenders(sendsAndReceivesAConnection, 'center');
-    const receivers = this.getSenders(receivesAConnection, 'right');
-    const connections = this.getConnections();
-    const senderAndReceiverConnections = this.getSenderAndReceiverConnections(sendsAndReceivesAConnection);
+    const { width, height, sendsAConnection, sendsAndReceivesAConnection, receivesAConnection, personSize, data, tooltip } = state;
+
+    const graphicData = {
+      width,
+      height,
+      sendsAConnection,
+      sendsAndReceivesAConnection,
+      receivesAConnection,
+      personSize,
+      data
+    };
 
     return (
       <div className={s.container}>
         <div className={s.graphic}>
-          <svg width={width} height={height}>
-            <defs>
-              {profilePictures}
-
-            </defs>
-            {connections}
-            {senderAndReceiverConnections}
-            {senders}
-            {sendAndReceivers}
-            {receivers}
-          </svg>
+          <Graphic
+            {...graphicData}
+            tooltipCallback={this.showTooltip}
+            hideTooltipCallback={this.hideTooltip}
+          />
+          <Tooltip {...tooltip} canvasWidth={width} />
         </div>
-        <Tooltip {...tooltip} />
       </div>
     )
   }

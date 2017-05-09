@@ -7,29 +7,3 @@
 .graphic {
   position: relative;
 }
-
-.person {
-  stroke-width: 2;
-
-  &--left {
-    stroke: map(colors, productos, caribe);
-  }
-
-  &--center {
-    stroke: map(colors, productos, opinion);
-  }
-
-  &--right {
-    stroke: map(colors, productos, santander);
-  }
-}
-
-.connection {
-  stroke: map(colors, secondary, dark);
-  stroke-width: 3
-}
-
-.person,
-.connection {
-  cursor: pointer;
-}
