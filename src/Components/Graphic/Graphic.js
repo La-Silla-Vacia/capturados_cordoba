@@ -10,15 +10,19 @@ export default class Graphic extends Component {
   }
 
   getSenders(group, alignment) {
-    const { personSize, width } = this.props;
+    const { personSize, width, height } = this.props;
     const circleSize = personSize / 2;
     let y = circleSize;
     let x = circleSize;
+    let elementsHeight = (personSize * 1.2) * group.length;
+    let startHeight = (height / 2) - (elementsHeight / 2);
 
     if (alignment === 'right') {
       x = width - circleSize;
+      y = startHeight;
     } else if (alignment === 'center') {
       x = width / 2;
+      y = startHeight;
     }
 
     return group.map((sender, index) => {
@@ -46,7 +50,7 @@ export default class Graphic extends Component {
   }
 
   getConnections() {
-    const { sendsAConnection, receivesAConnection, sendsAndReceivesAConnection, personSize, width } = this.props;
+    const { sendsAConnection, receivesAConnection, sendsAndReceivesAConnection, personSize, width, height } = this.props;
     return sendsAConnection.map((sender, index) => {
       let center = false;
       let x1 = personSize / 2;
@@ -55,12 +59,18 @@ export default class Graphic extends Component {
       let x2 = width - personSize / 2;
       let y2;
 
+      let elementsHeight = (personSize * 1.2) * receivesAConnection.length;
+      let startHeight = (height / 2) - (elementsHeight / 2);
+
+      let bothElementsHeight = (personSize * 1.2) * sendsAndReceivesAConnection.length;
+      let bothStartHeight = (height / 2) - (bothElementsHeight / 2);
+
       return sender.connections.map((con) => {
         let notInReceivers = true;
         receivesAConnection.map((recItem, index) => {
           if (recItem.id === con) {
             notInReceivers = false;
-            y2 = (personSize / 2) + ((personSize * 1.2) * index);
+            y2 = startHeight + (((personSize * 1.2) * index));
           }
         });
 
@@ -68,7 +78,7 @@ export default class Graphic extends Component {
           sendsAndReceivesAConnection.map((recItem, index) => {
             if (recItem.id === con) {
               x2 = width / 2;
-              y2 = (personSize / 2) + ((personSize * 1.2) * index);
+              y2 = bothStartHeight + ((personSize * 1.2) * index);
               center = true;
             }
           });
@@ -90,17 +100,25 @@ export default class Graphic extends Component {
   }
 
   getSenderAndReceiverConnections(group) {
-    const { width, receivesAConnection, personSize } = this.props;
+    const { width, receivesAConnection, personSize, height, sendsAndReceivesAConnection } = this.props;
     return group.map((sender, index) => {
+      let elementsHeight = (personSize * 1.2) * receivesAConnection.length;
+      let startHeight = (height / 2) - (elementsHeight / 2);
+
+      let bothElementsHeight = (personSize * 1.2) * sendsAndReceivesAConnection.length;
+      let bothStartHeight = (height / 2) - (bothElementsHeight / 2);
+
       let x1 = width / 2 + personSize / 2;
-      let y1 = (personSize / 2) + ((personSize * 1.2) * index);
+      let y1 = bothStartHeight + (((personSize * 1.2) * index));
 
       let x2 = width - personSize / 2;
+
+
 
       return sender.connections.map((con) => {
         return receivesAConnection.map((recItem, index) => {
           if (recItem.id === con) {
-            let y2 = (personSize / 2) + ((personSize * 1.2) * index);
+            let y2 = startHeight + ((personSize * 1.2) * index);
             return (
               <line x1={x1} y1={y1} x2={x2} y2={y2} className={cx(s.connection, s.connection__center)} />
             );
