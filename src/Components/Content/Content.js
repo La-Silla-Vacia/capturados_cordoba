@@ -5,16 +5,39 @@ const md = new MarkdownIt();
 import s from './Content.css';
 
 export default class Content extends Component {
+
+  constructor() {
+    super();
+
+    this.state = {
+      height: 0
+    }
+  }
+
+  componentDidMount() {
+    const box = document.querySelector('#lsvi-content-box');
+    if (box) {
+      this.setState({ height: box.offsetHeight })
+    }
+  }
+
   render(props, state) {
     const { graphHeight, toggleContentCallback, name, description } = props;
-    const style = {
-      marginTop: -(graphHeight)
+    const { height } = state;
+    let style = {
+      position: 'absolute'
     };
+
+    if (height > graphHeight) {
+      style = {
+        marginTop: -(graphHeight)
+      };
+    }
 
     const content = md.render(String(description));
 
     return (
-      <div className={s.container}>
+      <div id="lsvi-content-box" className={s.container} style={style}>
         <div className={s.inner}>
           <div className={s.header}>
             <button className={s.button} onClick={toggleContentCallback.bind(this, false)}>
@@ -28,7 +51,7 @@ export default class Content extends Component {
             </button>
           </div>
           <h3 className={s.title}>{name}</h3>
-          <div dangerouslySetInnerHTML={{__html: content}} />
+          <div dangerouslySetInnerHTML={{ __html: content }} />
 
           <button className={s.button} onClick={toggleContentCallback.bind(this, false)}>
             <svg className={s.arrow} x="0px" y="0px"
