@@ -2,6 +2,11 @@
   font-family: map(fonts, family-sans);
   font-size: 16px;
   display: block;
+  position: relative;
+
+  p {
+    font-size: 1em !important;
+  }
 }
 
 .graphic {

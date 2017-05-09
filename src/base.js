@@ -4,6 +4,7 @@ import cx from 'classnames';
 import s from './base.css';
 import Tooltip from "./Components/Tooltip";
 import Graphic from "./Components/Graphic";
+import Content from "./Components/Content";
 const data = require('../data/data.json');
 
 export default class Base extends Component {
@@ -16,18 +17,20 @@ export default class Base extends Component {
       sendsAConnection: [],
       receivesAConnection: [],
       sendsAndReceivesAConnection: [],
-      personSize: 75,
+      personSize: 40,
       width: 300,
       height: 400,
       tooltip: {
         show: false,
         x: false,
         y: false
-      }
+      },
+      content: false
     };
 
     this.showTooltip = this.showTooltip.bind(this);
     this.hideTooltip = this.hideTooltip.bind(this);
+    this.toggleContent = this.toggleContent.bind(this);
   }
 
   componentWillMount() {
@@ -108,8 +111,12 @@ export default class Base extends Component {
       if (connections.length) {
         sendsAConnection.push(item);
         connections.map((con) => {
-          if (receivesAConnection.indexOf(data[con]) === -1)
-            receivesAConnection.push(data[con]);
+          data.map((dataItem) => {
+            if (dataItem.id === con) {
+              if (receivesAConnection.indexOf(dataItem) === -1)
+                receivesAConnection.push(dataItem);
+            }
+          });
         });
       }
     });
@@ -119,14 +126,14 @@ export default class Base extends Component {
         sendsAndReceivesAConnection.push(item);
         const sendsIndex = sendsAConnection.indexOf(item);
         const receivesIndex = receivesAConnection.indexOf(item);
-        sendsAConnection.splice(sendsIndex, sendsIndex + 1);
-        receivesAConnection.splice(receivesIndex, receivesIndex + 1);
+        sendsAConnection.splice(sendsIndex, 1);
+        receivesAConnection.splice(receivesIndex, 1);
       }
     });
 
-    let height = receivesAConnection.length * (personSize * 1.5);
+    let height = receivesAConnection.length * (personSize * 1.2);
     if (sendsAConnection.length > receivesAConnection.length) {
-      height = sendsAConnection.length * (personSize * 1.5);
+      height = sendsAConnection.length * (personSize * 1.2);
     }
 
     this.setState({
@@ -135,7 +142,7 @@ export default class Base extends Component {
       sendsAndReceivesAConnection,
       data,
       height
-    })
+    });
   }
 
   showTooltip(name, x) {
@@ -146,6 +153,27 @@ export default class Base extends Component {
   hideTooltip() {
     const tooltip = { show: false };
     this.setState({ tooltip });
+  }
+
+  toggleContent(item) {
+    if (item && item.description) {
+      this.setState({ content: item });
+    } else {
+      this.setState({ content: false });
+    }
+  }
+
+  getContent() {
+    const { content, height } = this.state;
+    if (content) {
+      return (
+        <Content
+          graphHeight={height}
+          toggleContentCallback={this.toggleContent}
+          {...content}
+        />
+      )
+    }
   }
 
   render(props, state) {
@@ -161,6 +189,8 @@ export default class Base extends Component {
       data
     };
 
+    const content = this.getContent();
+
     return (
       <div className={s.container}>
         <div className={s.graphic}>
@@ -168,9 +198,11 @@ export default class Base extends Component {
             {...graphicData}
             tooltipCallback={this.showTooltip}
             hideTooltipCallback={this.hideTooltip}
+            toggleContentCallback={this.toggleContent}
           />
           <Tooltip {...tooltip} canvasWidth={width} />
         </div>
+        {content}
       </div>
     )
   }

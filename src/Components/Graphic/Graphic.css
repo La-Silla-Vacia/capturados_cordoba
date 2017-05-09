@@ -2,6 +2,10 @@
   position: relative;
 }
 
+.canvas {
+  display: block;
+}
+
 .person {
   stroke-width: 2;
 
@@ -10,7 +14,7 @@
   }
 
   &--center {
-    stroke: map(colors, productos, opinion);
+    stroke: map(colors, productos, caribe);
   }
 
   &--right {
@@ -20,10 +24,19 @@
 
 .connection {
   stroke: map(colors, secondary, dark);
-  stroke-width: 3
+  stroke-width: 1;
+  transition: .15s stroke-width;
+
+  &:hover {
+    stroke-width: 3;
+  }
+
+  &__center {
+    stroke: map(colors, productos, caribe);
+  }
 }
 
-.person,
+.person--has-content,
 .connection {
   cursor: pointer;
 }

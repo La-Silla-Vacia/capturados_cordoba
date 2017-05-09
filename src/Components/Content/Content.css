@@ -1,0 +1,57 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,.5);
+  z-index: 10;
+  padding: 1em;
+}
+
+.inner {
+  background-color: #fff;
+  padding: 1em;
+  max-width: 35em;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.header {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 1em;
+}
+
+.button {
+  background: transparent;
+  border: 1px solid map(colors, primary, dark);
+  border-radius: 0.3em;
+  display: flex;
+  align-items: center;
+  float: right;
+
+  & .arrowPath {
+    fill: map(colors, primary, dark);
+  }
+
+  &:hover {
+    background-color: map(colors, primary, dark);
+    color: #fff;
+
+    & .arrowPath {
+      fill: #fff;
+    }
+  }
+}
+
+.arrow {
+  width: 1.5em;
+  height: 1em;
+  margin-right: 0.5em;
+}
+
+.title {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}

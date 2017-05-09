@@ -6,6 +6,7 @@
   "dependencies": {
     "lsv-components": "latest",
     "lsv-interactive": "latest",
+    "markdown-it": "^8.3.1",
     "whatwg-fetch": "latest"
   },
   "scripts": {
