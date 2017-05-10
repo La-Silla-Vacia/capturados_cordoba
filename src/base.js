@@ -163,8 +163,11 @@ export default class Base extends Component {
   }
 
   showTooltip(name, x) {
-    const tooltip = { show: true, content: name, x: x.layerX, y: x.layerY };
-    this.setState({ tooltip });
+    const {is_touch_device} = this.props;
+    if (!is_touch_device) {
+      const tooltip = { show: true, content: name, x: x.layerX, y: x.layerY };
+      this.setState({ tooltip });
+    }
   }
 
   hideTooltip() {

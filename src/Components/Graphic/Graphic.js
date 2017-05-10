@@ -45,9 +45,9 @@ export default class Graphic extends Component {
           fill={`url(#photo-${id})`}
           r={circleSize - 2}
           className={cx(s.person, s[`person--${alignment}`], { [s['person--has-content']]: hasContent }, {[s['person--special']]: special})}
+          onClick={this.props.toggleContentCallback.bind(this, sender)}
           onMouseMove={this.props.tooltipCallback.bind(this, name)}
           onMouseLeave={this.props.hideTooltipCallback}
-          onClick={this.props.toggleContentCallback.bind(this, sender)}
         />
       )
     });
