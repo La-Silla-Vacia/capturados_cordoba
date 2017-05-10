@@ -16,3 +16,29 @@
 .graphic {
   position: relative;
 }
+
+.legend {
+  list-style: none;
+  padding: 0;
+  float: right;
+  text-align: right;
+  transform: translateY(100%);
+
+  &__circle {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5em;
+    border-radius: 100%;
+  }
+}
+
+.color {
+  &__red {
+    background-color: map(colors, productos, caribe);
+  }
+
+  &__yellow {
+    background-color: map(colors, productos, santander);
+  }
+}
