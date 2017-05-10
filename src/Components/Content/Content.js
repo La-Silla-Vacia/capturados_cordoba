@@ -18,32 +18,36 @@ export default class Content extends Component {
 
   componentDidMount() {
     const box = document.querySelector('#lsvi-content-box');
-    if (box) {
-      this.setState({ height: box.offsetHeight })
-    }
 
     setTimeout(() => {
-      this.setState({visible: true});
+      this.setState({ height: box.offsetHeight });
+      this.setState({ visible: true });
     }, 100);
   }
 
   render(props, state) {
     const { graphHeight, toggleContentCallback, name, description } = props;
     const { height, visible } = state;
-    let style = {
-      position: 'absolute'
-    };
 
-    if (height > graphHeight) {
+    let style;
+    if (height !== 0) {
       style = {
-        marginTop: -(graphHeight)
+        position: 'absolute',
+        height: '100%'
       };
+      console.log(height, graphHeight);
+      if (height > graphHeight) {
+        style = {
+          marginTop: -(graphHeight),
+          height: '100%'
+        };
+      }
     }
 
     const content = md.render(String(description));
 
     return (
-      <div id="lsvi-content-box" className={cx(s.container, {[s.container__visible]: visible})} style={style}>
+      <div id="lsvi-content-box" className={cx(s.container, { [s.container__visible]: visible })} style={style}>
         <div className={s.inner}>
           <div className={s.header}>
             <button className={s.button} onClick={toggleContentCallback.bind(this, false)}>
