@@ -7,7 +7,7 @@ import s from './base.css';
 import Tooltip from "./Components/Tooltip";
 import Graphic from "./Components/Graphic";
 import Content from "./Components/Content";
-const data = require('../data/data.json');
+// const data = require('../data/data.json');
 
 export default class Base extends Component {
 
@@ -73,7 +73,7 @@ export default class Base extends Component {
     }
 
     if (!dataExists) {
-      this.setState({ data: data });
+      console.log('could not get the data');
     } else {
       if (interactiveData.instrucciones) {
         const instructions = md.render(String(interactiveData.instrucciones));
