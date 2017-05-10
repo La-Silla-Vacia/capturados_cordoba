@@ -211,7 +211,7 @@ export default class Base extends Component {
     return (
       <div className={s.container}>
         <header className={s.header}>
-          <div className={s.instructions} dangerouslySetInnerHTML={{__html: instructions}} />
+          <div className={s.instructions} dangerouslySetInnerHTML={{ __html: instructions }} />
           <ul className={s.legend}>
             <li>En líos <span className={cx(s.legend__circle, s.color__red)} /></li>
             <li>Conexión política <span className={cx(s.legend__circle, s.color__yellow)} /></li>
