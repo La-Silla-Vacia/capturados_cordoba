@@ -8,6 +8,10 @@
   max-width: 713px;
 }
 
+.article-main-body > .img-container {
+  display: none;
+}
+
 @media (min-width: 1200px) {
   .article-content.col-sm-12.col-md-8 {
     width: 85%;
