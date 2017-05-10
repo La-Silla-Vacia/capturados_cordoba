@@ -7,9 +7,10 @@
 }
 
 .person {
-  stroke-width: 2;
+  stroke-width: 4;
 
   &--left {
+    stroke-width: 3;
     stroke: map(colors, productos, caribe);
   }
 
