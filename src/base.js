@@ -109,7 +109,8 @@ export default class Base extends Component {
         connections: connections,
         name: dataItem.nombre,
         photoLink: dataItem.fotoLink,
-        description: dataItem.explicacion
+        description: dataItem.explicacion,
+        special: dataItem.especial
       };
 
       data.push(item);

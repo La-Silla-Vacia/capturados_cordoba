@@ -13,12 +13,13 @@
     stroke: map(colors, productos, caribe);
   }
 
-  &--center {
-    stroke: map(colors, productos, caribe);
-  }
-
   &--right {
     stroke: map(colors, productos, santander);
+  }
+
+  &--center,
+  &--special {
+    stroke: map(colors, productos, caribe);
   }
 }
 
