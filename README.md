@@ -31,10 +31,10 @@ To embed on a webpage use this code:
 ```html
 <!-- START OF OUR INTERACTIVE -->
 <script type="text/javascript">
-window.capturados_cordoba_data = {
-  "name": "capturados_cordoba",
-  "dataUri": "https://lsv-data-visualizations.firebaseio.com/capturados-cordoba.json"
-}
+  window.capturados_cordoba_data = {
+	"instrucciones": "**Instrucciones:** Haga clic en cada personaje en líos (rojos) para leer el estado de su proceso, su lío y su conexión política",
+	"dataUri": "https://lsv-data-visualizations.firebaseio.com/capturados-cordoba.json"
+  }
 </script>
 <div class="lsv-interactive" id="capturados_cordoba">
 <img src="https://la-silla-vacia.github.io/capturados_cordoba/screenshot.png" class="screenshot" style="width:100%;">

@@ -37,7 +37,6 @@ export default class Graphic extends Component {
       }
 
       let hasContent = !!description;
-      console.log(sender.name, sender.special);
       return (
         <circle
           key={id}

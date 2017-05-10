@@ -1,5 +1,7 @@
 import { h, render, Component } from 'preact';
 import cx from 'classnames';
+import MarkdownIt from 'markdown-it';
+const md = new MarkdownIt();
 
 import s from './base.css';
 import Tooltip from "./Components/Tooltip";
@@ -13,6 +15,7 @@ export default class Base extends Component {
     super();
 
     this.state = {
+      instructions: '',
       data: [],
       sendsAConnection: [],
       receivesAConnection: [],
@@ -72,6 +75,10 @@ export default class Base extends Component {
     if (!dataExists) {
       this.setState({ data: data });
     } else {
+      if (interactiveData.instrucciones) {
+        const instructions = md.render(String(interactiveData.instrucciones));
+        this.setState({ instructions });
+      }
       if (interactiveData.dataUri) {
         dataUri = interactiveData.dataUri;
         this.fetchData(dataUri);
@@ -187,7 +194,7 @@ export default class Base extends Component {
   }
 
   render(props, state) {
-    const { width, height, sendsAConnection, sendsAndReceivesAConnection, receivesAConnection, personSize, data, tooltip } = state;
+    const { width, height, sendsAConnection, sendsAndReceivesAConnection, receivesAConnection, personSize, data, tooltip, instructions } = state;
 
     const graphicData = {
       width,
@@ -203,10 +210,13 @@ export default class Base extends Component {
 
     return (
       <div className={s.container}>
-        <ul className={s.legend}>
-          <li>En líos <span className={cx(s.legend__circle, s.color__red)} /></li>
-          <li>Conexión política <span className={cx(s.legend__circle, s.color__yellow)} /></li>
-        </ul>
+        <header className={s.header}>
+          <div className={s.instructions} dangerouslySetInnerHTML={{__html: instructions}} />
+          <ul className={s.legend}>
+            <li>En líos <span className={cx(s.legend__circle, s.color__red)} /></li>
+            <li>Conexión política <span className={cx(s.legend__circle, s.color__yellow)} /></li>
+          </ul>
+        </header>
         <div className={s.graphic}>
           <Graphic
             {...graphicData}
